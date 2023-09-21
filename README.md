@@ -1,2 +1,2 @@
 # Binary-Search-Tree
-Implementação de árvore binária
+Implementação de árvore binária em Java
