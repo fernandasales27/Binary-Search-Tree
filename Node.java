@@ -1,4 +1,4 @@
-package tree;
+package estdad1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,18 +13,24 @@ class Node<U extends Comparable<U>> {
 		left = right = null;
 	}
 
-	public void insertNode(Node<U> newNode) {
+	public Integer insertNode(Node<U> newNode) {
 		if (newNode.value.compareTo(value) < 0) {
-			if (left == null)
+			if (left == null) {
 				left = newNode;
-			else
+				newNode.balancefactor=0;
+			}
+			else {
 				left.insertNode(newNode);
+			}
 		} else {
-			if (right == null)
+			if (right == null) {
 				right = newNode;
+				newNode.balancefactor=0;
+			}
 			else
 				right.insertNode(newNode);
 		}
+		return balancefactor;
 	}
 
 	public void printNodesPreOrder() {
