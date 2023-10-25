@@ -1,4 +1,6 @@
-package tree;
+package estdad1;
+
+
 
 public class BinarySearchTree<T extends Comparable<T>> {
 
@@ -10,8 +12,10 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
 	public void insert(T obj) {
 		Node<T> newNode = new Node<T>(obj);
-		if (root == null)
+		if (root == null) {
 			root = newNode;
+			root.balancefactor=0;
+		}
 		else
 			root.insertNode(newNode);
 	}
