@@ -1,8 +1,12 @@
 package tree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class Node<U extends Comparable<U>> {
 	public U value;
 	public Node<U> left, right;
+	public Integer balancefactor;
 
 	public Node(U element) {
 		value = element;
@@ -46,4 +50,18 @@ class Node<U extends Comparable<U>> {
 			right.printNodesPostOrder();
 		System.out.println(value);
 	}
-}
+	
+	public List<U> convert() {
+		List<U> lista =  new ArrayList<>();
+		
+		if (left != null)
+			left.convert();
+		lista.add(value);
+		if (right != null)
+			right.convert();
+
+		return lista;
+	
+        }
+	}
+	
