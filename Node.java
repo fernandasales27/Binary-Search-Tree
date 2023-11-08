@@ -57,17 +57,6 @@ class Node<U extends Comparable<U>> {
 		System.out.println(value);
 	}
 	
-	public List<U> convert() {
-		List<U> lista =  new ArrayList<>();
-		
-		if (left != null)
-			left.convert();
-		lista.add(value);
-		if (right != null)
-			right.convert();
-
-		return lista;
 	
-        }
 	}
 	
