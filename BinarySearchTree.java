@@ -112,16 +112,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
 		return node;
 	}
 	
-	public void convertToVector() throws EmptyTreeException {
-
-				
-		if (root != null) {
-			root.convert();
-		} else {
-			throw new EmptyTreeException();
-		}
-		
-	}
+	
 
 
 }
