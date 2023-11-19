@@ -1,0 +1,310 @@
+arvore
+package estdad1;
+
+
+
+public class BinarySearchTree<T extends Comparable<T>> {
+
+	private Node<T> root;
+
+	public BinarySearchTree() {
+		root = null;
+	}
+
+	public void insert(T obj) {
+		Node<T> newNode = new Node<T>(obj);
+		if (root == null) {
+			root = newNode;
+			
+		}
+		else
+			root.insertNode(newNode);
+			//newNode.height = max(height(newNode.left), height(newNode.right)) + 1;
+
+	      //  newNode = balanceFactor(newNode);
+	}
+	
+	public void inOrder() throws EmptyTreeException {
+		if (root != null) {
+			root.printNodesInOrder();
+		} else {
+			throw new EmptyTreeException();
+		}
+	}
+	
+	public void preOrder() throws EmptyTreeException {
+		if (root != null) {
+			root.printNodesPreOrder();
+		} else {
+			throw new EmptyTreeException();
+		}
+	}
+
+	public void postOrder() throws EmptyTreeException {
+		if (root != null) {
+			root.printNodesPostOrder();
+		} else {
+			throw new EmptyTreeException();
+		}
+	}
+	
+	public void remove(T element) {
+		root = remove(root, element);
+	}
+
+	public Node<T> remove(Node<T> node, T element) {
+		if (node == null) {
+			return node;
+		}
+
+		int current = element.compareTo(node.value);
+
+		if (current < 0) {
+			node.left = remove(node.left, element);
+		} else if (current > 0) {
+			node.right = remove(node.right, element);
+		} else {
+
+			if (node.left == null) {
+				return node.right;
+			} else if (node.right == null) {
+				return node.left;
+			}
+
+			node.value = minValue(node.right);
+
+			node.right = remove(node.right, node.value);
+		}
+		return node;
+	}
+
+	public T minValue(Node<T> node) {
+		T minValue = node.value;
+		while (node.left != null) {
+			minValue = node.left.value;
+			node = node.left;
+		}
+		return minValue;
+	}
+	
+	public T min() throws EmptyTreeException {
+		if (root == null) {
+			throw new EmptyTreeException();
+		}
+		return min(root).value;
+	}
+
+	private Node<T> min(Node<T> node) {
+		while (node.left != null) {
+			node = node.left;
+		}
+		return node;
+	}
+
+	
+	public T max() throws EmptyTreeException {
+		if (root == null) {
+			throw new EmptyTreeException();
+		}
+		return max(root).value;
+	}
+
+	private Node<T> max(Node<T> node) {
+		while (node.right != null) {
+			node = node.right;
+		}
+		return node;
+	}
+	
+	
+	//--------------------------------------------------------------------
+	public int height(Node p) {
+	    if (p == null) {
+	        return -1;
+	    } else {
+	        return p.height;
+	    }
+	}
+
+	  public Node leftLeftRotn(Node p) {
+	        Node q = p.left;
+	        p.left = q.right;
+	        q.right = p;
+
+	        p.height = max(height(p.left), height(p.right)) + 1;
+	        q.height = max(height(q.left), p.height) + 1;
+
+	        return q;
+	    }
+
+	   
+	   public Node rightRightRotn(Node p) {
+	        Node q = p.right;
+	        p.right = q.left;
+	        q.left = p;
+
+	        p.height = max(height(p.left), height(p.right)) + 1;
+	        q.height = max(height(q.right), p.height) + 1;
+
+	        return q;
+	    }
+	    
+	 public Node leftRightRotn(Node p) {
+	        p.left = rightRightRotn(p.left);
+	        p = leftLeftRotn(p);
+
+	        return p;
+	    }
+
+	   public Node rightLeftRotn(Node p) {
+	        p.right = leftLeftRotn(p.right);
+	        p = rightRightRotn(p);
+	        return p;
+	    }
+
+	  public Node balanceFactor(Node p) {
+	        int bFactor, hL, hR;
+	        Node pLeft, pRight;
+
+	        if (p.left == null) {
+	            hL = 0;
+	        } else {
+	            hL = p.left.height + 1;
+	        }
+	        if (p.right == null) {
+	            hR = 0;
+	        } else {
+	            hR = p.right.height + 1;
+	        }
+	        bFactor = hL - hR;
+
+	        if (bFactor < 2 && bFactor > -2) {
+	            return p;
+	        } else if (bFactor == 2) {
+	            pLeft = p.left;
+
+	            if (height(pLeft.left) > height(pLeft.right))
+	                return leftLeftRotn(p);
+	            else
+	                return leftRightRotn(p);
+	        } else {
+	            pRight = p.right;
+
+	            if (height(pRight.right) > height(pRight.left))
+	                return rightRightRotn(p);
+	            else
+	                return rightLeftRotn(p);
+	        }
+	    }
+
+
+}
+_________________________________________________________________________----------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+package estdad1;
+
+import java.util.ArrayList;
+import java.util.List;
+
+class Node<U extends Comparable<U>> {
+	public U value;
+	public Node<U> left, right;
+	int height;
+	//public Integer balancefactor;
+
+	public Node(U element) {
+		value = element;
+		left = right = null;
+		this.height=0;
+	}
+
+	public Integer insertNode(Node<U> newNode) {
+		if (newNode.value.compareTo(value) < 0) {
+			if (left == null) {
+				left = newNode;
+				//newNode.balancefactor=0;
+			}
+			else {
+				left.insertNode(newNode);
+			}
+		} else {
+			if (right == null) {
+				right = newNode;
+				//newNode.balancefactor=0;
+			}
+			else
+				right.insertNode(newNode);
+		}
+		
+	        return newNode;
+	}
+
+	public void printNodesPreOrder() {
+		System.out.println(value);
+		if (left != null)
+			left.printNodesPreOrder();
+		if (right != null)
+			right.printNodesPreOrder();
+	}
+
+	public void printNodesInOrder() {
+		if (left != null)
+			left.printNodesInOrder();
+		System.out.println(value);
+		if (right != null)
+			right.printNodesInOrder();
+	}
+
+	public void printNodesPostOrder() {
+		if (left != null)
+			left.printNodesPostOrder();
+		if (right != null)
+			right.printNodesPostOrder();
+		System.out.println(value);
+	}
+	
+	
+	}
+	
+----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------
+package tree;
+
+public class AppMain {
+
+	public static void main(String[] args) {
+		try {
+			BinarySearchTree<Node> alunosADS = new BinarySearchTree<Node>();
+			Node root= null;
+			
+	        System.out.println("RL Rotation - ");
+	        root = alunosADS.insert(root,50);
+	        root = alunosADS.insert(root,40);
+	        root = alunosADS.insert(root,45);
+	        System.out.println("after Rotation root of tree - " + root.getNodeValue());
+
+	        System.out.println("RR Rotation - ");
+	        root = alunosADS.insert(root,30);
+	        root = alunosADS.insert(root,20);
+	        System.out.println("right of left child of root - " + root.left.right.value);
+
+	        System.out.println("LL Rotation - ");
+	        root = alunosADS.insert(root,60);
+	        root = alunosADS.insert(root, 80);
+	        System.out.println("left of right child of root - " + root.right.left.value);
+	        System.out.println("RL Rotation - ");
+	        root = alunosADS.insert(root,70);
+	        root = alunosADS.insert(root,90);
+	        root = alunosADS.insert(root,65);
+	        System.out.println("right child of root  - " + root.right.value);
+	 
+			
+
+			//alunosADS.inOrder();
+		} catch (Exception E) {
+			System.out.println(E.getMessage());
+		}
+	}
+
+}
